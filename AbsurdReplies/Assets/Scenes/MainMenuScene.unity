@@ -1535,6 +1535,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e644cfe98d06e3488915e007d02431e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _networkManager: {fileID: 983425315}
   _gameIdSource: {fileID: 162340653}
 --- !u!4 &1869281590
 Transform:
