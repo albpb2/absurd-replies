@@ -1,43 +1,36 @@
-﻿using System.Threading.Tasks;
-using AbsurdReplies.Exceptions;
-using Mirror;
+﻿using Mirror;
 using UnityEngine;
 
 namespace AbsurdReplies
 {
-    public class GameStarter : MonoBehaviour
+    public class GameStarter : NetworkBehaviour
     {
         [SerializeField]
         private NetworkManager _networkManager;
         [SerializeField]
-        private TMPro.TMP_InputField _gameIdSource;
-
-        public string GameId => _gameIdSource.text;
+        private PortInputText _portSource;
         
         private void Awake()
         {
-            DependencyValidator.ValidateDependency(_gameIdSource, nameof(_gameIdSource), nameof(GameStarter));
+            DependencyValidator.ValidateDependency(_portSource, nameof(_portSource), nameof(GameStarter));
             DependencyValidator.ValidateDependency(_networkManager, nameof(_networkManager), nameof(NetworkManager));
         }
 
         public async void StartHost()
         {
-            await ValidateGameId();
+            UpdatePort();
             _networkManager.StartHost();
         }
 
         public async void JoinLocal()
         {
-            await ValidateGameId();
+            UpdatePort();
             _networkManager.StartClient();
         }
 
-        private async Task ValidateGameId()
+        private void UpdatePort()
         {
-            if (string.IsNullOrWhiteSpace(GameId))
-            {
-                throw ExceptionBecause.GameIdMissing();
-            }
+            AbsurdRepliesNetworkManager.singleton.Transport.Port = _portSource.Port;
         }
     }
 }

@@ -6,14 +6,16 @@ using UnityEngine.UI;
 namespace AbsurdReplies
 {
     [RequireComponent(typeof(TMP_InputField))]
-    public class GameIdInputText : MonoBehaviour
+    public class PortInputText : MonoBehaviour
     {
+        private const ushort DefaultPort = 7777;
+        
         private TMP_InputField _inputField;
         
         [SerializeField]
         private Button[] _gameIdDependentButtons;
 
-        public string GameId => _inputField.text;
+        public ushort Port => string.IsNullOrEmpty(_inputField.text) ? DefaultPort : ushort.Parse(_inputField.text);
 
         private async void Awake()
         {
@@ -22,7 +24,7 @@ namespace AbsurdReplies
 
         public async void UpdateGameIdText()
         {
-            if (string.IsNullOrWhiteSpace(GameId))
+            if (string.IsNullOrWhiteSpace(_inputField.text))
             {
                 await DisableButtons();
             }
