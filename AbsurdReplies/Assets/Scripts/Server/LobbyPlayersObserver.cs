@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using AbsurdReplies.Player;
 using Mirror;
@@ -48,6 +47,7 @@ namespace AbsurdReplies.Server
             {
                 AbsurdRepliesPlayer.onPlayerConnected -= HandlePlayerConnected;
                 AbsurdRepliesPlayer.onPlayerNameChanged -= HandlePlayerNameChanged;
+                AbsurdRepliesNetworkManager.singleton.onClientDisconnected -= HandleClientDisconnected;
             }
         }
 

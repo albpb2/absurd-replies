@@ -1,6 +1,7 @@
 ﻿using AbsurdReplies.Server;
 using Mirror;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace AbsurdReplies
@@ -27,6 +28,11 @@ namespace AbsurdReplies
             {
                 Destroy(gameObject);
             }
+        }
+
+        public void StartGame()
+        { 
+            NetworkManager.singleton.ServerChangeScene(SceneNames.GameScene);
         }
 
         private void Update()
