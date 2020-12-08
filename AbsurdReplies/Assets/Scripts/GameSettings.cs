@@ -6,7 +6,7 @@ namespace AbsurdReplies
     {
         private int DefaultMinPlayers = 2;
         private int DefaultTargetScore = 15;
-        private int DefaultRoundTimeSeconds = 60;
+        private int DefaultRoundTimeSeconds = 10;
         private int DefaultVotingTimeSeconds = 60;
 
         public int MinPlayers => DefaultMinPlayers;
