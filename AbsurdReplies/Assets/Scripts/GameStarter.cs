@@ -1,4 +1,5 @@
 ﻿using Mirror;
+using TMPro;
 using UnityEngine;
 
 namespace AbsurdReplies
@@ -8,11 +9,13 @@ namespace AbsurdReplies
         [SerializeField]
         private NetworkManager _networkManager;
         [SerializeField]
-        private PortInputText _portSource;
+        private TMP_InputField _portInputField;
+
+        private ushort Port => ushort.Parse(_portInputField.text);
         
         private void Awake()
         {
-            DependencyValidator.ValidateDependency(_portSource, nameof(_portSource), nameof(GameStarter));
+            DependencyValidator.ValidateDependency(_portInputField, nameof(_portInputField), nameof(GameStarter));
             DependencyValidator.ValidateDependency(_networkManager, nameof(_networkManager), nameof(NetworkManager));
         }
 
@@ -30,7 +33,7 @@ namespace AbsurdReplies
 
         private void UpdatePort()
         {
-            AbsurdRepliesNetworkManager.singleton.Transport.Port = _portSource.Port;
+            AbsurdRepliesNetworkManager.singleton.Transport.Port = Port;
         }
     }
 }
