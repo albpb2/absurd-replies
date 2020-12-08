@@ -318,10 +318,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57c521261a3040e4b9802cdb583d6856, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _inputField: {fileID: 0}
-  _gameIdDependentButtons:
-  - {fileID: 817177005}
-  - {fileID: 1447611219}
 --- !u!1 &305432688
 GameObject:
   m_ObjectHideFlags: 0
@@ -507,10 +503,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57c521261a3040e4b9802cdb583d6856, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _inputField: {fileID: 0}
-  _gameIdDependentButtons:
-  - {fileID: 817177005}
-  - {fileID: 1447611219}
 --- !u!114 &411858593
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2023,8 +2015,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  _networkManager: {fileID: 2062966267}
   _portInputField: {fileID: 162340653}
+  _playerNameField: {fileID: 411858593}
 --- !u!4 &1869281590
 Transform:
   m_ObjectHideFlags: 0
