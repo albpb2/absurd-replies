@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using AbsurdReplies.Player;
 using Mirror;
@@ -11,19 +12,24 @@ namespace AbsurdReplies.Server
         [SerializeField] private LobbyPlayersListUpdater _lobbyPlayersListUpdater;
         
         private Dictionary<int, AbsurdRepliesPlayer> _players;
+
+        public int PlayersCount => _players.Count;
         
         private void Awake()
         {
-            if (isClientOnly)
+            DependencyValidator.ValidateDependency(_lobbyPlayersListUpdater, nameof(_lobbyPlayersListUpdater), nameof(LobbyPlayersObserver));
+            
+            _players = new Dictionary<int, AbsurdRepliesPlayer>();
+        }
+
+        private void Start()
+        {
+            if (!isServer)
             {
                 Debug.Log($"Not server, destroying {nameof(LobbyPlayersObserver)}");
                 Destroy(gameObject);
                 return;
             }
-            
-            DependencyValidator.ValidateDependency(_lobbyPlayersListUpdater, nameof(_lobbyPlayersListUpdater), nameof(LobbyPlayersObserver));
-            
-            _players = new Dictionary<int, AbsurdRepliesPlayer>();
         }
 
         private void OnEnable()
