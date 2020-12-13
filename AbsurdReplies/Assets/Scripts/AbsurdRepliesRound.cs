@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Mirror;
 using UnityEngine;
+using Zenject;
 
 namespace AbsurdReplies
 {
@@ -10,7 +11,7 @@ namespace AbsurdReplies
         public delegate void RoundFinishedDelegate();
         public event RoundFinishedDelegate onRoundFinished;
 
-        [SerializeField] private Dice _dice;
+        private QuestionCategorySelector _questionCategorySelector;
         
         private DateTime? _startTime;
         private bool _finished;
@@ -19,10 +20,16 @@ namespace AbsurdReplies
         private int DurationSeconds => GameSettings.Instance.RoundTimeSeconds;
         private bool Started => _startTime.HasValue;
         private bool Finished => _finished;
+        
+        [Inject]
+        public void InitializeDependencies(QuestionCategorySelector questionCategorySelector)
+        {
+            _questionCategorySelector = questionCategorySelector;
+        }
 
         private async void Awake()
         {
-            DependencyValidator.ValidateDependency(_dice, nameof(_dice), nameof(AbsurdRepliesRound));
+            DependencyValidator.ValidateDependency(_questionCategorySelector, nameof(_questionCategorySelector), nameof(AbsurdRepliesRound));
         }
 
         private async void Update()
@@ -37,25 +44,27 @@ namespace AbsurdReplies
             }
         }
 
-        public async Task StartRound()
+        public async Task PlayNewRound()
         {
             if (!isServer)
             {
                 Destroy(gameObject);
             }
 
+            await InitializeRound();
+        }
+
+        private async Task InitializeRound()
+        {
+            Debug.Log("Initializing round");
+
             await PickCategory();
         }
 
         private async Task PickCategory()
         {
-            const int diceToRoll = 6;
-            var roll = await _dice.RollDice(diceToRoll);
-            
-            if (Enum.IsDefined(typeof(QuestionCategory), roll))
-                _questionCategory = (QuestionCategory) roll;
-            else 
-                _questionCategory = QuestionCategory.Unknown;¡
+            _questionCategory = await _questionCategorySelector.SelectRandomQuestionCategory();
+            Debug.Log($"Category picked: {_questionCategory}");
         }
 
         private Task StartTimer()

@@ -29,7 +29,7 @@ namespace AbsurdReplies
             {
                 DependencyValidator.ValidateDependency(_round, nameof(_round), nameof(AbsurdRepliesGame));
                 ShufflePlayers();
-                await _round.StartRound();
+                await _round.PlayNewRound();
             }
         }
 

@@ -1,16 +1,15 @@
 ﻿using System.Threading.Tasks;
-using UnityEngine;
 using Random = System.Random;
 
 namespace AbsurdReplies
 {
-    public class Dice : MonoBehaviour
+    public class Dice
     {
         private const int MinDiceValue = 1;
         
         private Random _random;
 
-        private async void Awake()
+        public Dice()
         {
             _random = new Random();
         }
