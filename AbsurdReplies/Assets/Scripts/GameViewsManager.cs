@@ -12,11 +12,12 @@ namespace AbsurdReplies
         async void OnEnable()
         {
             _round.onUnknownCategoryPicked += DisplayCategorySelectionView;
+            _round.onKnownCategoryPicked += HideCategorySelectionView;
         }
-
         async void OnDisable()
         {
             _round.onUnknownCategoryPicked -= DisplayCategorySelectionView;
+            _round.onKnownCategoryPicked -= HideCategorySelectionView;
         }
 
         private void DisplayCategorySelectionView()
@@ -24,10 +25,21 @@ namespace AbsurdReplies
             DisplayCategorySelectionView(_game.GetCurrentRoundLeaderConnectionToClient());
         }
 
+        private void HideCategorySelectionView()
+        {
+            HideCategorySelectionView(_game.GetCurrentRoundLeaderConnectionToClient());
+        }
+        
         [TargetRpc]
         private void DisplayCategorySelectionView(NetworkConnection networkConnection)
         {
             _categorySelectionView.SetActive(true);
+        }
+        
+        [TargetRpc]
+        private void HideCategorySelectionView(NetworkConnection networkConnection)
+        {
+            _categorySelectionView.SetActive(false);
         }
     }
 }

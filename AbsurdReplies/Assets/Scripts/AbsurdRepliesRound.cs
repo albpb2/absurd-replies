@@ -13,6 +13,9 @@ namespace AbsurdReplies
 
         public delegate void UnknownCategoryPickedDelegate();
         public event UnknownCategoryPickedDelegate onUnknownCategoryPicked;
+
+        public delegate void KnownCategoryPickedDelegate();
+        public event KnownCategoryPickedDelegate onKnownCategoryPicked;
         
         private QuestionCategorySelector _questionCategorySelector;
         
@@ -61,6 +64,7 @@ namespace AbsurdReplies
         {
             _questionCategory = (QuestionCategory)Enum.Parse(typeof(QuestionCategory), questionCategory);
             Debug.Log($"Category picked by round leader: {_questionCategory}");
+            onKnownCategoryPicked?.Invoke();
         }
 
         private async Task InitializeRound()
