@@ -15,6 +15,9 @@ namespace AbsurdReplies
 
         public async Task<QuestionCategory> SelectRandomQuestionCategory()
         {
+            if (DebugOptions.Instance.ForceUnknownCategory)
+                return QuestionCategory.Unknown;
+            
             const int diceToRoll = 6;
             var roll = await _dice.RollDice(diceToRoll);
             
