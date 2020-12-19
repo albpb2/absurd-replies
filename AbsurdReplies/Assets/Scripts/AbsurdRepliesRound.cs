@@ -11,6 +11,9 @@ namespace AbsurdReplies
         public delegate void RoundFinishedDelegate();
         public event RoundFinishedDelegate onRoundFinished;
 
+        public delegate void UnknownCategoryPickedDelegate();
+        public event UnknownCategoryPickedDelegate onUnknownCategoryPicked;
+        
         private QuestionCategorySelector _questionCategorySelector;
         
         private DateTime? _startTime;
@@ -54,6 +57,12 @@ namespace AbsurdReplies
             await InitializeRound();
         }
 
+        public void SetQuestionCategory(string questionCategory)
+        {
+            _questionCategory = (QuestionCategory)Enum.Parse(typeof(QuestionCategory), questionCategory);
+            Debug.Log($"Category picked by round leader: {_questionCategory}");
+        }
+
         private async Task InitializeRound()
         {
             Debug.Log("Initializing round");
@@ -65,6 +74,10 @@ namespace AbsurdReplies
         {
             _questionCategory = await _questionCategorySelector.SelectRandomQuestionCategory();
             Debug.Log($"Category picked: {_questionCategory}");
+            if (_questionCategory == QuestionCategory.Unknown)
+            {
+                onUnknownCategoryPicked?.Invoke();
+            }
         }
 
         private Task StartTimer()

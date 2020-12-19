@@ -1,5 +1,8 @@
-﻿namespace AbsurdReplies
+﻿using System;
+
+namespace AbsurdReplies
 {
+    [Serializable]
     public enum QuestionCategory
     {
         Unknown = 0,
