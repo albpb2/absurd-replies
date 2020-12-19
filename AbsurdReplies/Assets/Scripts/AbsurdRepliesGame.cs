@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Mirror;
 using UnityEngine;
 using Random = System.Random;
@@ -14,9 +15,11 @@ namespace AbsurdReplies
         [SyncVar] private int _currentPlayerIndex;
 
         private Random _random;
-        
+
         // Only in server
         private List<NetworkConnectionToClient> _playerConnections;
+        private int _readyPlayersCount;
+        private bool _started;
 
         private async void Awake()
         {
@@ -25,11 +28,25 @@ namespace AbsurdReplies
 
         private async void Start()
         {
+            NotifyReadyToPlayGame();
             if (isServer)
             {
                 DependencyValidator.ValidateDependency(_round, nameof(_round), nameof(AbsurdRepliesGame));
-                ShufflePlayers();
-                await _round.PlayNewRound();
+            }
+        }
+
+        private async void Update()
+        {
+            if (isServer)
+            {
+                if (!_started)
+                {
+                    if (_readyPlayersCount >= NetworkServer.connections.Count)
+                    {
+                        await StartGame();
+                        _started = true;
+                    }
+                }
             }
         }
 
@@ -44,7 +61,24 @@ namespace AbsurdReplies
         }
 
         public NetworkConnectionToClient GetCurrentRoundLeaderConnectionToClient() => _playerConnections[_currentPlayerIndex];
-
+        
+        [Command(ignoreAuthority = true)]
+        private void NotifyReadyToPlayGame()
+        {
+            _readyPlayersCount++;
+        }
+        
+        private async Task StartGame()
+        {
+            if (!isServer)
+            {
+                return;
+            }
+            
+            ShufflePlayers();
+            await _round.PlayNewRound();
+        }
+        
         private void ShufflePlayers()
         {
             _playerConnections = NetworkServer.connections.Values.ToList();
