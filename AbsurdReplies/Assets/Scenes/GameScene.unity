@@ -574,6 +574,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   _timerText: {fileID: 776906094}
+  _gameViewsManager: {fileID: 1476734445}
 --- !u!114 &455643699
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -955,7 +956,7 @@ GameObject:
   m_Component:
   - component: {fileID: 650159847}
   m_Layer: 5
-  m_Name: ReaderView
+  m_Name: QuestionView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2423,7 +2424,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1471522152}
   m_Layer: 5
-  m_Name: WriterView
+  m_Name: AnswerView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2484,6 +2485,8 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   _categorySelectionView: {fileID: 178167834}
+  _questionView: {fileID: 650159846}
+  _answerView: {fileID: 1471522151}
   _round: {fileID: 455643698}
   _game: {fileID: 918943161}
 --- !u!4 &1476734446

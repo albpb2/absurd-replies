@@ -12,13 +12,8 @@ namespace AbsurdReplies
         public delegate void RoundFinishedDelegate();
         public event RoundFinishedDelegate onRoundFinished;
 
-        public delegate void UnknownCategoryPickedDelegate();
-        public event UnknownCategoryPickedDelegate onUnknownCategoryPicked;
-
-        public delegate void KnownCategoryPickedDelegate();
-        public event KnownCategoryPickedDelegate onKnownCategoryPicked;
-
         [SerializeField] private TMP_Text _timerText;
+        [SerializeField] private GameViewsManager _gameViewsManager;
         
         [SyncVar] private bool _started;
         [SyncVar] private bool _finished;
@@ -40,6 +35,8 @@ namespace AbsurdReplies
         private async void Awake()
         {
             DependencyValidator.ValidateDependency(_questionCategorySelector, nameof(_questionCategorySelector), nameof(AbsurdRepliesRound));
+            DependencyValidator.ValidateDependency(_timerText, nameof(_timerText), nameof(AbsurdRepliesRound));
+            DependencyValidator.ValidateDependency(_gameViewsManager, nameof(_gameViewsManager), nameof(AbsurdRepliesRound));
         }
 
         private async void Update()
@@ -75,7 +72,7 @@ namespace AbsurdReplies
         {
             _questionCategory = (QuestionCategory)Enum.Parse(typeof(QuestionCategory), questionCategory);
             Debug.Log($"Category picked by round leader: {_questionCategory}");
-            onKnownCategoryPicked?.Invoke();
+            _gameViewsManager.HideCategorySelectionView();
             StartRound();
         }
 
@@ -92,7 +89,7 @@ namespace AbsurdReplies
             Debug.Log($"Category picked: {_questionCategory}");
             if (_questionCategory == QuestionCategory.Unknown)
             {
-                onUnknownCategoryPicked?.Invoke();
+                _gameViewsManager.DisplayCategorySelectionView();
             }
             else
             {
@@ -103,6 +100,7 @@ namespace AbsurdReplies
         private void StartRound()
         {
             InitializeTimerText();
+            _gameViewsManager.DisplayQuestionAndAnswerViews();
             StartTimer();
             _started = true;
         }

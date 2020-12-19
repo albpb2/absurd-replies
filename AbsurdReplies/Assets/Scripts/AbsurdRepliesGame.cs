@@ -62,6 +62,19 @@ namespace AbsurdReplies
 
         public NetworkConnectionToClient GetCurrentRoundLeaderConnectionToClient() => _playerConnections[_currentPlayerIndex];
         
+        public IEnumerable<NetworkConnectionToClient> GetCurrentRoundParticipantsConnectionToClient()
+        {
+            for (var i = 0; i < _currentPlayerIndex; i++)
+            {
+                yield return _playerConnections[i];
+            }
+
+            for (var i = _currentPlayerIndex + 1; i < _playerConnections.Count; i++)
+            {
+                yield return _playerConnections[i];
+            }
+        }
+        
         [Command(ignoreAuthority = true)]
         private void NotifyReadyToPlayGame()
         {
