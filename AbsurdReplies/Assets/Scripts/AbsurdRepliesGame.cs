@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Mirror;
 using UnityEngine;
@@ -48,6 +49,16 @@ namespace AbsurdReplies
         {
             _playerConnections = NetworkServer.connections.Values.ToList();
             _playerConnections.Shuffle(_random);
+
+            var shuffledPlayersLog = "Players shuffled: ";
+            for (var i = 0; i < _playerConnections.Count; i++)
+            {
+                shuffledPlayersLog += $"{_playerConnections[i].connectionId}, ";
+            }
+
+            shuffledPlayersLog = shuffledPlayersLog.Substring(0, shuffledPlayersLog.Length - 2);
+            
+            Debug.Log(shuffledPlayersLog);
         }
 
         private void HandleRoundFinished()
