@@ -42,6 +42,8 @@ namespace AbsurdReplies
             _round.onRoundFinished -= HandleRoundFinished;
         }
 
+        public NetworkConnectionToClient GetCurrentRoundLeaderConnectionToClient() => _playerConnections[_currentPlayerIndex];
+
         private void ShufflePlayers()
         {
             _playerConnections = NetworkServer.connections.Values.ToList();
