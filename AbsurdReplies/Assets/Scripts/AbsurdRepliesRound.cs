@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Mirror;
+using TMPro;
 using UnityEngine;
 using Zenject;
 
@@ -16,16 +17,19 @@ namespace AbsurdReplies
 
         public delegate void KnownCategoryPickedDelegate();
         public event KnownCategoryPickedDelegate onKnownCategoryPicked;
+
+        [SerializeField] private TMP_Text _timerText;
+        
+        [SyncVar] private bool _started;
+        [SyncVar] private bool _finished;
+        [SyncVar] private int _remainingSeconds;
         
         private QuestionCategorySelector _questionCategorySelector;
         
         private DateTime? _startTime;
-        private bool _finished;
         private QuestionCategory _questionCategory;
 
         private int DurationSeconds => GameSettings.Instance.RoundTimeSeconds;
-        private bool Started => _startTime.HasValue;
-        private bool Finished => _finished;
         
         [Inject]
         public void InitializeDependencies(QuestionCategorySelector questionCategorySelector)
@@ -40,16 +44,23 @@ namespace AbsurdReplies
 
         private async void Update()
         {
-            if (Started && !Finished)
+            if (_started)
             {
-                if (_startTime.Value.AddSeconds(DurationSeconds) < DateTime.UtcNow)
-                {
-                    _finished = true;
-                    onRoundFinished?.Invoke();
-                }
+                _timerText.text = $"{_remainingSeconds}";
+            }
+            
+            if (!isServer)
+            {
+                return;
+            }
+            
+            if (_started && !_finished)
+            {
+                UpdateRemainingTime();
+                FinishRoundIfTimeIsOver();
             }
         }
-
+        
         public async Task PlayNewRound()
         {
             if (!isServer)
@@ -65,6 +76,7 @@ namespace AbsurdReplies
             _questionCategory = (QuestionCategory)Enum.Parse(typeof(QuestionCategory), questionCategory);
             Debug.Log($"Category picked by round leader: {_questionCategory}");
             onKnownCategoryPicked?.Invoke();
+            StartRound();
         }
 
         private async Task InitializeRound()
@@ -82,6 +94,22 @@ namespace AbsurdReplies
             {
                 onUnknownCategoryPicked?.Invoke();
             }
+            else
+            {
+                StartRound();
+            }
+        }
+
+        private void StartRound()
+        {
+            InitializeTimerText();
+            StartTimer();
+            _started = true;
+        }
+
+        private void InitializeTimerText()
+        {
+            _remainingSeconds = DurationSeconds;
         }
 
         private Task StartTimer()
@@ -89,5 +117,22 @@ namespace AbsurdReplies
             _startTime = DateTime.UtcNow;
             return Task.CompletedTask;
         }
+
+        private void FinishRoundIfTimeIsOver()
+        {
+            if (_remainingSeconds <= 0)
+            {
+                _remainingSeconds = 0;
+                _finished = true;
+                onRoundFinished?.Invoke();
+            }
+        }
+
+        private void UpdateRemainingTime()
+        {
+            var elapsedTime = DateTime.UtcNow - _startTime.Value;
+            _remainingSeconds = DurationSeconds - (int) elapsedTime.TotalSeconds;
+        }
+
     }
 }

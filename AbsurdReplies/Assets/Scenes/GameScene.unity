@@ -573,6 +573,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  _timerText: {fileID: 776906094}
 --- !u!114 &455643699
 MonoBehaviour:
   m_ObjectHideFlags: 0
