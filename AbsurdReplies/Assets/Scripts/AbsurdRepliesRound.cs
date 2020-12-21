@@ -36,7 +36,6 @@ namespace AbsurdReplies
 
         private async void Awake()
         {
-            DependencyValidator.ValidateDependency(_questionCategorySelector, nameof(_questionCategorySelector), nameof(AbsurdRepliesRound));
             DependencyValidator.ValidateDependency(_timerText, nameof(_timerText), nameof(AbsurdRepliesRound));
             DependencyValidator.ValidateDependency(_gameViewsManager, nameof(_gameViewsManager), nameof(AbsurdRepliesRound));
         }
@@ -70,6 +69,7 @@ namespace AbsurdReplies
             await InitializeRound();
         }
 
+        [Command(ignoreAuthority = true)]
         public async void SetQuestionCategory(string questionCategory)
         {
             _questionCategory = (QuestionCategory)Enum.Parse(typeof(QuestionCategory), questionCategory);
@@ -105,7 +105,7 @@ namespace AbsurdReplies
         private void StartRound()
         {
             InitializeTimerText();
-            _gameViewsManager.DisplayQuestionAndAnswerViews();
+            _gameViewsManager.DisplayQuestionAndAnswerViews(_question);
             StartTimer();
             _started = true;
         }

@@ -1,4 +1,5 @@
 ﻿using Mirror;
+using TMPro;
 using UnityEngine;
 
 namespace AbsurdReplies
@@ -8,6 +9,8 @@ namespace AbsurdReplies
         [SerializeField] private GameObject _categorySelectionView;
         [SerializeField] private GameObject _questionView;
         [SerializeField] private GameObject _answerView;
+        [SerializeField] private TMP_Text _questionText;
+        [SerializeField] private TMP_Text _answerText;
         [SerializeField] private AbsurdRepliesRound _round;
         [SerializeField] private AbsurdRepliesGame _game;
 
@@ -16,6 +19,10 @@ namespace AbsurdReplies
             DependencyValidator.ValidateDependency(_categorySelectionView, nameof(_categorySelectionView), nameof(GameViewsManager));
             DependencyValidator.ValidateDependency(_questionView, nameof(_questionView), nameof(GameViewsManager));
             DependencyValidator.ValidateDependency(_answerView, nameof(_answerView), nameof(GameViewsManager));
+            DependencyValidator.ValidateDependency(_questionText, nameof(_questionText), nameof(GameViewsManager));
+            DependencyValidator.ValidateDependency(_answerText, nameof(_answerText), nameof(GameViewsManager));
+            DependencyValidator.ValidateDependency(_round, nameof(_round), nameof(GameViewsManager));
+            DependencyValidator.ValidateDependency(_game, nameof(_game), nameof(GameViewsManager));
         }
 
         public void DisplayCategorySelectionView()
@@ -40,15 +47,15 @@ namespace AbsurdReplies
             _categorySelectionView.SetActive(false);
         }
 
-        public void DisplayQuestionAndAnswerViews()
+        public void DisplayQuestionAndAnswerViews(Question question)
         {
-            DisplayQuestionView();
+            DisplayQuestionView(question);
             DisplayAnswerView();
         }
 
-        private void DisplayQuestionView()
+        private void DisplayQuestionView(Question question)
         {
-            DisplayQuestionView(_game.GetCurrentRoundLeaderConnectionToClient());
+            DisplayQuestionView(_game.GetCurrentRoundLeaderConnectionToClient(), NetworkQuestion.From(question));
         }
 
         private void HideQuestionView()
@@ -57,9 +64,11 @@ namespace AbsurdReplies
         }
         
         [TargetRpc]
-        private void DisplayQuestionView(NetworkConnection networkConnection)
+        private void DisplayQuestionView(NetworkConnection networkConnection, NetworkQuestion question)
         {
             _questionView.SetActive(true);
+            _questionText.text = question.Heading;
+            _answerText.text = question.Answer;
         }
         
         [TargetRpc]
