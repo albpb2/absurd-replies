@@ -1,6 +1,7 @@
 ﻿using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace AbsurdReplies
 {
@@ -8,6 +9,7 @@ namespace AbsurdReplies
     {
         [SerializeField] private RoundReplies _roundReplies;
         [SerializeField] private TMP_InputField _replyInputField;
+        [SerializeField] private Button _submitButton;
 
         private void Awake()
         {
@@ -23,6 +25,9 @@ namespace AbsurdReplies
             }
             
             _roundReplies.SendReply(_replyInputField.text);
+
+            _replyInputField.interactable = false;
+            _submitButton.interactable = false;
         }
     }
 }
