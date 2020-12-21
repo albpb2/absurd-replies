@@ -18,7 +18,7 @@ namespace AbsurdReplies
         
         [SyncVar] private bool _started;
         [SyncVar] private bool _finished;
-        [SyncVar] private int _remainingSeconds;
+        [SyncVar(hook = nameof(UpdateTimerText))] private int _remainingSeconds;
         
         private QuestionCategorySelector _questionCategorySelector;
         
@@ -42,11 +42,6 @@ namespace AbsurdReplies
 
         private async void Update()
         {
-            if (_started)
-            {
-                _timerText.text = $"{_remainingSeconds}";
-            }
-            
             if (!isServer)
             {
                 return;
@@ -78,6 +73,11 @@ namespace AbsurdReplies
             
             await PickQuestion();
             StartRound();
+        }
+
+        private void UpdateTimerText(int oldValue, int newValue)
+        {
+            _timerText.text = $"{newValue}";
         }
 
         private async Task InitializeRound()
