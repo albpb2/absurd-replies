@@ -50,7 +50,13 @@ namespace AbsurdReplies
             if (_started && !_finished)
             {
                 UpdateRemainingTime();
-                FinishRoundIfTimeIsOver();
+                await FinishRoundIfTimeIsOver();
+            }
+
+            if (_started && _finished)
+            {
+                _started = false;
+                await InitializeRound();
             }
         }
         
@@ -84,6 +90,7 @@ namespace AbsurdReplies
         {
             Debug.Log("Initializing round");
 
+            _finished = false;
             _questionCategory = await _questionCategorySelector.SelectRandomQuestionCategory();
             Debug.Log($"Category picked: {_questionCategory}");
             if (_questionCategory == QuestionCategory.Unknown)
@@ -121,14 +128,23 @@ namespace AbsurdReplies
             return Task.CompletedTask;
         }
 
-        private void FinishRoundIfTimeIsOver()
+        private Task FinishRoundIfTimeIsOver()
         {
             if (_remainingSeconds <= 0)
             {
                 _remainingSeconds = 0;
-                _finished = true;
-                onRoundFinished?.Invoke();
+                return FinishRound();
             }
+            
+            return Task.CompletedTask;
+        }
+
+        private Task FinishRound()
+        {
+            _finished = true;
+            _gameViewsManager.HideAllViews();
+            onRoundFinished?.Invoke();
+            return Task.CompletedTask;
         }
 
         private void UpdateRemainingTime()

@@ -104,5 +104,13 @@ namespace AbsurdReplies
         {
             _answerView.SetActive(false);
         }
+
+        [ClientRpc]
+        public void HideAllViews()
+        {
+            _answerView.SetActive(false);
+            _questionView.SetActive(false);
+            _categorySelectionView.SetActive(false);
+        }
     }
 }
