@@ -110,11 +110,8 @@ namespace AbsurdReplies
 
         private void HandleRoundFinished()
         {
-            _currentPlayerIndex++;
-            if (_currentPlayerIndex >= _playerConnections.Count)
-            {
-                _currentPlayerIndex = 0;
-            }
+            _currentPlayerIndex = (_currentPlayerIndex + 1) % _playerConnections.Count;
+            
             Debug.Log("Round finished");
         }
     }
