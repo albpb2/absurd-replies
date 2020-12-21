@@ -14,6 +14,7 @@ namespace AbsurdReplies
 
         [SerializeField] private TMP_Text _timerText;
         [SerializeField] private GameViewsManager _gameViewsManager;
+        [SerializeField] private GameQuestionsProvider _questionsProvider;
         
         [SyncVar] private bool _started;
         [SyncVar] private bool _finished;
@@ -23,6 +24,7 @@ namespace AbsurdReplies
         
         private DateTime? _startTime;
         private QuestionCategory _questionCategory;
+        private Question _question;
 
         private int DurationSeconds => GameSettings.Instance.RoundTimeSeconds;
         
@@ -68,11 +70,13 @@ namespace AbsurdReplies
             await InitializeRound();
         }
 
-        public void SetQuestionCategory(string questionCategory)
+        public async void SetQuestionCategory(string questionCategory)
         {
             _questionCategory = (QuestionCategory)Enum.Parse(typeof(QuestionCategory), questionCategory);
             Debug.Log($"Category picked by round leader: {_questionCategory}");
             _gameViewsManager.HideCategorySelectionView();
+            
+            await PickQuestion();
             StartRound();
         }
 
@@ -80,11 +84,6 @@ namespace AbsurdReplies
         {
             Debug.Log("Initializing round");
 
-            await PickCategory();
-        }
-
-        private async Task PickCategory()
-        {
             _questionCategory = await _questionCategorySelector.SelectRandomQuestionCategory();
             Debug.Log($"Category picked: {_questionCategory}");
             if (_questionCategory == QuestionCategory.Unknown)
@@ -93,8 +92,14 @@ namespace AbsurdReplies
             }
             else
             {
+                await PickQuestion();
                 StartRound();
             }
+        }
+
+        private async Task PickQuestion()
+        {
+            _question = await _questionsProvider.GetQuestion(_questionCategory);
         }
 
         private void StartRound()

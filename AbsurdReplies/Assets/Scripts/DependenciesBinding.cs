@@ -11,6 +11,8 @@ namespace AbsurdReplies
             Container.Bind<GameCodeRetriever>().ToSelf().AsCached();
             Container.Bind<Dice>().ToSelf().AsCached();
             Container.Bind<QuestionCategorySelector>().ToSelf().AsCached();
+            Container.Bind<QuestionParser>().ToSelf().AsCached();
+            Container.Bind<QuestionsProvider>().ToSelf().AsCached();
         }
     }
 }
