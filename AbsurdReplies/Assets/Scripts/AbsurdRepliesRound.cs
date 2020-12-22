@@ -15,12 +15,13 @@ namespace AbsurdReplies
         [SerializeField] private TMP_Text _timerText;
         [SerializeField] private GameViewsManager _gameViewsManager;
         [SerializeField] private GameQuestionsProvider _questionsProvider;
-        
+
         [SyncVar] private bool _started;
         [SyncVar] private bool _finished;
         [SyncVar(hook = nameof(UpdateTimerText))] private int _remainingSeconds;
         
         private QuestionCategorySelector _questionCategorySelector;
+        private RoundReplies _roundReplies;
         
         private DateTime? _startTime;
         private QuestionCategory _questionCategory;
@@ -29,9 +30,11 @@ namespace AbsurdReplies
         private int DurationSeconds => GameSettings.Instance.RoundTimeSeconds;
         
         [Inject]
-        public void InitializeDependencies(QuestionCategorySelector questionCategorySelector)
+        public void InitializeDependencies(QuestionCategorySelector questionCategorySelector,
+            RoundReplies roundReplies)
         {
             _questionCategorySelector = questionCategorySelector;
+            _roundReplies = roundReplies;
         }
 
         private async void Awake()
@@ -107,6 +110,7 @@ namespace AbsurdReplies
         private async Task PickQuestion()
         {
             _question = await _questionsProvider.GetQuestion(_questionCategory);
+            _roundReplies.SetTrueReply(_question.Answer);
         }
 
         private void StartRound()
