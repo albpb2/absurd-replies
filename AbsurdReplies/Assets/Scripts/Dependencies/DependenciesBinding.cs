@@ -1,6 +1,6 @@
 ﻿using Zenject;
 
-namespace AbsurdReplies
+namespace AbsurdReplies.Dependencies
 {
     public class DependenciesBinding : MonoInstaller
     {

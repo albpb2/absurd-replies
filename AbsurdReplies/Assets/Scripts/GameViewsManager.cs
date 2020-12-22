@@ -1,6 +1,8 @@
-﻿using Mirror;
+﻿using AbsurdReplies.Dependencies;
+using Mirror;
 using TMPro;
 using UnityEngine;
+using Zenject;
 
 namespace AbsurdReplies
 {
@@ -11,8 +13,19 @@ namespace AbsurdReplies
         [SerializeField] private GameObject _answerView;
         [SerializeField] private TMP_Text _questionText;
         [SerializeField] private TMP_Text _answerText;
-        [SerializeField] private AbsurdRepliesRound _round;
-        [SerializeField] private AbsurdRepliesGame _game;
+        
+        private AbsurdRepliesRound _round;
+        private AbsurdRepliesGame _game;
+
+        [Inject]
+        public void InitializeDependencies(AbsurdRepliesRound round, AbsurdRepliesGame game)
+        {
+            _round = round;
+            _game = game;
+            
+            DependencyValidator.ValidateDependency(_round, nameof(_round), nameof(GameViewsManager));
+            DependencyValidator.ValidateDependency(_game, nameof(_game), nameof(GameViewsManager));
+        }
 
         private void Awake()
         {

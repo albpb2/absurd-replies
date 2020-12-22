@@ -1,6 +1,6 @@
 ﻿using AbsurdReplies.Exceptions;
 
-namespace AbsurdReplies
+namespace AbsurdReplies.Dependencies
 {
     public static class DependencyValidator
     {

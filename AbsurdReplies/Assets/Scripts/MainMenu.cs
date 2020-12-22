@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using AbsurdReplies.Player;
+using AbsurdReplies.Dependencies;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
