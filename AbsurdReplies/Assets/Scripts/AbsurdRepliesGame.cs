@@ -1,25 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Mirror;
 using UnityEngine;
+using Zenject;
 using Random = System.Random;
 
 namespace AbsurdReplies
 {
     public class AbsurdRepliesGame : NetworkBehaviour
     {
-        [SerializeField] private AbsurdRepliesRound _round;
-        
         [SyncVar] private int _currentPlayerIndex;
 
         private Random _random;
+        private AbsurdRepliesRound _round;
 
         // Only in server
         private List<NetworkConnectionToClient> _playerConnections;
         private int _readyPlayersCount;
         private bool _started;
+
+        [Inject]
+        public void InitializeDependencies(AbsurdRepliesRound round)
+        {
+            _round = round;
+
+            DependencyValidator.ValidateDependency(_round, nameof(_round), nameof(AbsurdRepliesGame));
+        }
 
         private async void Awake()
         {
@@ -29,10 +36,6 @@ namespace AbsurdReplies
         private async void Start()
         {
             NotifyReadyToPlayGame();
-            if (isServer)
-            {
-                DependencyValidator.ValidateDependency(_round, nameof(_round), nameof(AbsurdRepliesGame));
-            }
         }
 
         private async void Update()

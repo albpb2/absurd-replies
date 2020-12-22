@@ -1,23 +1,30 @@
 ﻿using System.Collections.Generic;
 using Mirror;
 using UnityEngine;
+using Zenject;
 
 namespace AbsurdReplies
 {
     public class RoundReplies : NetworkBehaviour
     {
-        [SerializeField] private AbsurdRepliesGame _game;
+        private AbsurdRepliesGame _game;
         
         private Dictionary<int, string> _replies;
         private string _trueReply;
+
+        [Inject]
+        public void InitializeDependencies(AbsurdRepliesGame game)
+        {
+            _game = game;
+            
+            DependencyValidator.ValidateDependency(game, nameof(game), nameof(RoundReplies));
+        }
 
         private void Awake()
         {
             if (!isServer)
                 return;
-            
-            DependencyValidator.ValidateDependency(_game, nameof(_game), nameof(RoundReplies));
-            
+
             _replies = new Dictionary<int, string>();
         }
 

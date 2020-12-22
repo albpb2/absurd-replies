@@ -13,8 +13,6 @@ namespace AbsurdReplies
         public event RoundFinishedDelegate onRoundFinished;
 
         [SerializeField] private TMP_Text _timerText;
-        [SerializeField] private GameViewsManager _gameViewsManager;
-        [SerializeField] private GameQuestionsProvider _questionsProvider;
 
         [SyncVar] private bool _started;
         [SyncVar] private bool _finished;
@@ -22,6 +20,8 @@ namespace AbsurdReplies
         
         private QuestionCategorySelector _questionCategorySelector;
         private RoundReplies _roundReplies;
+        private GameViewsManager _gameViewsManager;
+        private GameQuestionsProvider _questionsProvider;
         
         private DateTime? _startTime;
         private QuestionCategory _questionCategory;
@@ -30,17 +30,26 @@ namespace AbsurdReplies
         private int DurationSeconds => GameSettings.Instance.RoundTimeSeconds;
         
         [Inject]
-        public void InitializeDependencies(QuestionCategorySelector questionCategorySelector,
-            RoundReplies roundReplies)
+        public void InitializeDependencies(
+            QuestionCategorySelector questionCategorySelector,
+            RoundReplies roundReplies,
+            GameViewsManager gameViewsManager,
+            GameQuestionsProvider questionsProvider)
         {
             _questionCategorySelector = questionCategorySelector;
             _roundReplies = roundReplies;
+            _gameViewsManager = gameViewsManager;
+            _questionsProvider = questionsProvider;
+            
+            DependencyValidator.ValidateDependency(_questionCategorySelector, nameof(_questionCategorySelector), nameof(AbsurdRepliesRound));
+            DependencyValidator.ValidateDependency(_roundReplies, nameof(_roundReplies), nameof(AbsurdRepliesRound));
+            DependencyValidator.ValidateDependency(_gameViewsManager, nameof(_gameViewsManager), nameof(AbsurdRepliesRound));
+            DependencyValidator.ValidateDependency(_questionsProvider, nameof(_questionsProvider), nameof(AbsurdRepliesRound));
         }
 
         private async void Awake()
         {
             DependencyValidator.ValidateDependency(_timerText, nameof(_timerText), nameof(AbsurdRepliesRound));
-            DependencyValidator.ValidateDependency(_gameViewsManager, nameof(_gameViewsManager), nameof(AbsurdRepliesRound));
         }
 
         private async void Update()
