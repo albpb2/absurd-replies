@@ -72,6 +72,9 @@ namespace AbsurdReplies
                 yield return _playerConnections[i];
             }
         }
+
+        public bool IsRoundLeader(int connectionId) =>
+            GetCurrentRoundLeaderConnectionToClient().connectionId == connectionId;
         
         [Command(ignoreAuthority = true)]
         private void NotifyReadyToPlayGame()

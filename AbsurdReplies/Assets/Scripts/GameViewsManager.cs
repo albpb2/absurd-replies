@@ -1,7 +1,9 @@
-﻿using AbsurdReplies.Dependencies;
+﻿using System.Threading.Tasks;
+using AbsurdReplies.Dependencies;
 using Mirror;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using Zenject;
 
 namespace AbsurdReplies
@@ -11,8 +13,11 @@ namespace AbsurdReplies
         [SerializeField] private GameObject _categorySelectionView;
         [SerializeField] private GameObject _questionView;
         [SerializeField] private GameObject _answerView;
+        [SerializeField] private GameObject _votingView;
         [SerializeField] private TMP_Text _questionText;
         [SerializeField] private TMP_Text _answerText;
+        [SerializeField] private TMP_InputField _votingInputField;
+        [SerializeField] private Button _votingButton;
         
         private AbsurdRepliesRound _round;
         private AbsurdRepliesGame _game;
@@ -33,6 +38,7 @@ namespace AbsurdReplies
             DependencyValidator.ValidateDependency(_questionView, nameof(_questionView), nameof(GameViewsManager));
             DependencyValidator.ValidateDependency(_answerView, nameof(_answerView), nameof(GameViewsManager));
             DependencyValidator.ValidateDependency(_questionText, nameof(_questionText), nameof(GameViewsManager));
+            DependencyValidator.ValidateDependency(_votingView, nameof(_votingView), nameof(GameViewsManager));
             DependencyValidator.ValidateDependency(_answerText, nameof(_answerText), nameof(GameViewsManager));
             DependencyValidator.ValidateDependency(_round, nameof(_round), nameof(GameViewsManager));
             DependencyValidator.ValidateDependency(_game, nameof(_game), nameof(GameViewsManager));
@@ -119,11 +125,29 @@ namespace AbsurdReplies
         }
 
         [ClientRpc]
-        public void HideAllViews()
+        public async void HideAllViews()
         {
             _answerView.SetActive(false);
             _questionView.SetActive(false);
             _categorySelectionView.SetActive(false);
+            _votingView.SetActive(false);
+        }
+
+        public async Task DisplayVotingView()
+        {
+            DisplayVotingView(_game.GetCurrentRoundLeaderConnectionToClient(), false);
+            foreach (var participantConnectionToClient in _game.GetCurrentRoundParticipantsConnectionToClient())
+            {
+                DisplayVotingView(participantConnectionToClient, transform);
+            }
+        }
+        
+        [TargetRpc]
+        public async void DisplayVotingView(NetworkConnection networkConnection, bool canVote)
+        {
+            _votingView.SetActive(true);
+            _votingInputField.interactable = canVote;
+            _votingButton.interactable = canVote;
         }
     }
 }

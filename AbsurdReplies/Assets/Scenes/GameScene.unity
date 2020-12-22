@@ -2878,8 +2878,11 @@ MonoBehaviour:
   _categorySelectionView: {fileID: 178167834}
   _questionView: {fileID: 650159846}
   _answerView: {fileID: 1471522151}
+  _votingView: {fileID: 859044455}
   _questionText: {fileID: 622130202}
   _answerText: {fileID: 1811967282}
+  _votingInputField: {fileID: 1671263551}
+  _votingButton: {fileID: 1841577546}
 --- !u!4 &1476734446
 Transform:
   m_ObjectHideFlags: 0
