@@ -13,7 +13,6 @@ namespace AbsurdReplies
     {
         [SyncVar] private int _currentPlayerIndex;
 
-        private Random _random;
         private AbsurdRepliesRound _round;
 
         // Only in server
@@ -27,11 +26,6 @@ namespace AbsurdReplies
             _round = round;
 
             DependencyValidator.ValidateDependency(_round, nameof(_round), nameof(AbsurdRepliesGame));
-        }
-
-        private async void Awake()
-        {
-            _random = new Random();
         }
 
         private async void Start()
@@ -99,7 +93,7 @@ namespace AbsurdReplies
         private void ShufflePlayers()
         {
             _playerConnections = NetworkServer.connections.Values.ToList();
-            _playerConnections.Shuffle(_random);
+            _playerConnections.Shuffle();
 
             var shuffledPlayersLog = "Players shuffled: ";
             for (var i = 0; i < _playerConnections.Count; i++)

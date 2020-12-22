@@ -1,4 +1,5 @@
-﻿using Zenject;
+﻿using AbsurdReplies.Game.Round;
+using Zenject;
 
 namespace AbsurdReplies.Dependencies
 {
@@ -11,6 +12,12 @@ namespace AbsurdReplies.Dependencies
             Container.Bind<RoundReplies>().FromComponentInHierarchy().AsSingle();
             Container.Bind<GameViewsManager>().FromComponentInHierarchy().AsSingle();
             Container.Bind<GameQuestionsProvider>().FromComponentInHierarchy().AsSingle();
+            Container.Bind<VotingView>().FromComponentInHierarchy().AsSingle();
+            Container.Bind<VotingProcess>().FromComponentInHierarchy().AsSingle();
+            Container.Bind<RoundStates>().ToSelf().AsSingle();
+            Container.Bind<QuestionAndAnswerRoundState>().ToSelf().AsSingle();
+            Container.Bind<WaitingToStartRoundState>().ToSelf().AsSingle();
+            Container.Bind<VotingRoundState>().ToSelf().AsSingle();
         }
     }
 }
