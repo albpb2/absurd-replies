@@ -40,7 +40,8 @@ namespace AbsurdReplies.Game.Round
             if (round.RemainingSeconds <= 0)
             {
                 FinishStage();
-            
+
+                await round.FinishRound();
                 await round.PlayNewRound();
 
                 return await _waitingToStartRoundState.EnterState(round);
