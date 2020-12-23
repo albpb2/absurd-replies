@@ -37,13 +37,12 @@ namespace AbsurdReplies
         private QuestionCategory _questionCategory;
         private Question _question;
         private IRoundState _state;
+        private int _timerSeconds;
 
         public bool Started => _started;
         public bool Finished => _finished;
         public int RemainingSeconds => _remainingSeconds;
         public Question Question => _question;
-
-        private int DurationSeconds => GameSettings.Instance.RoundTimeSeconds;
         
         [Inject]
         public void InitializeDependencies(
@@ -128,10 +127,11 @@ namespace AbsurdReplies
             await PickQuestion();
         }
 
-        public Task StartTimer()
+        public Task StartTimer(int seconds)
         {
             _startTime = DateTime.UtcNow;
-            _remainingSeconds = DurationSeconds;
+            _timerSeconds = seconds;
+            _remainingSeconds = seconds;
             
             return Task.CompletedTask;
         }
@@ -139,7 +139,7 @@ namespace AbsurdReplies
         public Task UpdateRemainingTime()
         {
             var elapsedTime = DateTime.UtcNow - _startTime.Value;
-            _remainingSeconds = DurationSeconds - (int) elapsedTime.TotalSeconds;
+            _remainingSeconds = _timerSeconds - (int) elapsedTime.TotalSeconds;
             if (_remainingSeconds < 0)
                 _remainingSeconds = 0;
 

@@ -19,24 +19,24 @@ namespace AbsurdReplies.Game.Round
             DependencyValidator.ValidateDependency(_gameViewsManager, nameof(_gameViewsManager), nameof(QuestionAndAnswerRoundState));
         }
 
-        public Task<IRoundState> EnterState(AbsurdRepliesRound round)
+        public async Task<IRoundState> EnterState(AbsurdRepliesRound round)
         {
             _gameViewsManager.DisplayQuestionAndAnswerViews(round.Question);
-            round.StartTimer();
-            return Task.FromResult(this as IRoundState);
+            await round.StartTimer(GameSettings.Instance.RoundTimeSeconds);
+            return this;
         }
 
-        public Task<IRoundState> Update(AbsurdRepliesRound round)
+        public async Task<IRoundState> Update(AbsurdRepliesRound round)
         {
-            round.UpdateRemainingTime();
+            await round.UpdateRemainingTime();
 
             if (round.RemainingSeconds <= 0)
             {
                 FinishStage();
-                return _votingRoundState.EnterState(round);
+                return await _votingRoundState.EnterState(round);
             }
 
-            return Task.FromResult(this as IRoundState);
+            return this;
         }
         
         private void FinishStage()

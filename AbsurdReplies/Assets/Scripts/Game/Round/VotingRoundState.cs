@@ -1,14 +1,8 @@
-﻿using System.Collections;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using AbsurdReplies.Dependencies;
-using UnityEngine;
 
 namespace AbsurdReplies.Game.Round
 {
-    /// <summary>
-    /// Unimplemented.
-    /// ATM this contains some dirty code to end the round in 5 seconds just for demo purposes.
-    /// </summary>
     public class VotingRoundState : IRoundState
     {
         private WaitingToStartRoundState _waitingToStartRoundState;
@@ -27,30 +21,30 @@ namespace AbsurdReplies.Game.Round
 
         public async Task<IRoundState> EnterState(AbsurdRepliesRound round)
         {
-            _roundFinished = false;
             await _gameViewsManager.DisplayVotingView();
-            round.StartCoroutine(FinishRoundIn5Seconds());
+            await round.StartTimer(GameSettings.Instance.RoundTimeSeconds);
             return this;
         }
 
         public async Task<IRoundState> Update(AbsurdRepliesRound round)
         {
-            if (!_roundFinished)
-                return this;
-            
-            await round.FinishRound();
+            await round.UpdateRemainingTime();
 
-            _gameViewsManager.HideAllViews();
+            if (round.RemainingSeconds <= 0)
+            {
+                FinishStage();
             
-            await round.PlayNewRound();
+                await round.PlayNewRound();
 
-            return await _waitingToStartRoundState.EnterState(round);
+                return await _waitingToStartRoundState.EnterState(round);
+            }
+
+            return this;
         }
-
-        private IEnumerator FinishRoundIn5Seconds()
+        
+        private void FinishStage()
         {
-            yield return new WaitForSeconds(5);
-            _roundFinished = true;
+            _gameViewsManager.HideAllViews();
         }
     }
 }

@@ -1,20 +1,26 @@
 ﻿using SPStudios.Tools;
+using UnityEngine;
 
 namespace AbsurdReplies
 {
     public class GameSettings : MonoSingleton<GameSettings>
     {
-        private int DefaultMinPlayers = 1;
-        private int DefaultTargetScore = 15;
-        private int DefaultRoundTimeSeconds = 10;
-        private int DefaultVotingTimeSeconds = 60;
+        private const int DefaultMinPlayers = 1;
+        private const int DefaultTargetScore = 15;
+        private const int DefaultRoundTimeSeconds = 10;
+        private const int DefaultVotingTimeSeconds = 60;
 
-        public int MinPlayers => DefaultMinPlayers;
+        [SerializeField] private int _minPlayers = DefaultMinPlayers;
+        [SerializeField] private int _targetScore = DefaultTargetScore;
+        [SerializeField] private int _roundTimeSeconds = DefaultRoundTimeSeconds;
+        [SerializeField] private int _votingTimeSeconds = DefaultVotingTimeSeconds;
 
-        public int TargetScore => DefaultTargetScore;
+        public int MinPlayers => _minPlayers;
 
-        public int RoundTimeSeconds => DefaultRoundTimeSeconds;
+        public int TargetScore => _targetScore;
 
-        public int VotingTimeSeconds => 60;
+        public int RoundTimeSeconds => _roundTimeSeconds;
+
+        public int VotingTimeSeconds => _votingTimeSeconds;
     }
 }
