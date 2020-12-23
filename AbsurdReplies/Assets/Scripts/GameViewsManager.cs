@@ -18,6 +18,8 @@ namespace AbsurdReplies
         [SerializeField] private TMP_Text _answerText;
         [SerializeField] private TMP_InputField _votingInputField;
         [SerializeField] private Button _votingButton;
+        [SerializeField] private TMP_InputField _answerViewInputText;
+        [SerializeField] private Button _answerViewButton;
         
         private AbsurdRepliesRound _round;
         private AbsurdRepliesGame _game;
@@ -40,8 +42,8 @@ namespace AbsurdReplies
             DependencyValidator.ValidateDependency(_questionText, nameof(_questionText), nameof(GameViewsManager));
             DependencyValidator.ValidateDependency(_votingView, nameof(_votingView), nameof(GameViewsManager));
             DependencyValidator.ValidateDependency(_answerText, nameof(_answerText), nameof(GameViewsManager));
-            DependencyValidator.ValidateDependency(_round, nameof(_round), nameof(GameViewsManager));
-            DependencyValidator.ValidateDependency(_game, nameof(_game), nameof(GameViewsManager));
+            DependencyValidator.ValidateDependency(_votingInputField, nameof(_votingInputField), nameof(GameViewsManager));
+            DependencyValidator.ValidateDependency(_votingButton, nameof(_votingButton), nameof(GameViewsManager));
         }
 
         public void DisplayCategorySelectionView()
@@ -116,6 +118,8 @@ namespace AbsurdReplies
         private void DisplayAnswerView(NetworkConnection networkConnection)
         {
             _answerView.SetActive(true);
+            _answerViewInputText.interactable = true;
+            _answerViewButton.interactable = true;
         }
         
         [TargetRpc]

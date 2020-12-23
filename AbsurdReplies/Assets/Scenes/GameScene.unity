@@ -2961,6 +2961,8 @@ MonoBehaviour:
   _answerText: {fileID: 1811967282}
   _votingInputField: {fileID: 1671263551}
   _votingButton: {fileID: 1841577546}
+  _answerViewInputText: {fileID: 1007489159}
+  _answerViewButton: {fileID: 1972022629}
 --- !u!4 &1476734446
 Transform:
   m_ObjectHideFlags: 0
