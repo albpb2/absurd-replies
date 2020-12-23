@@ -31,6 +31,11 @@ namespace AbsurdReplies
             _repliesByConnectionId = new Dictionary<int, string>();
         }
 
+        public void Initialize()
+        {
+            _repliesByConnectionId = new Dictionary<int, string>();
+        }
+
         [Command(ignoreAuthority = true)]
         public async void SendReply(string reply, NetworkConnectionToClient sender = null)
         {
@@ -41,6 +46,7 @@ namespace AbsurdReplies
         public void SetTrueReply(string reply)
         {
             _trueReply = reply;
+            _repliesByConnectionId[_game.GetCurrentRoundLeaderConnectionToClient().connectionId] = reply;
         }
     }
 }

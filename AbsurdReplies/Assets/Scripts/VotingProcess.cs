@@ -69,6 +69,11 @@ namespace AbsurdReplies
 
         private void AssignShuffledOptions()
         {
+            if (_roundReplies.RepliesByConnectionId == null)
+            {
+                return;
+            }
+            
             var connectionIds = _roundReplies.RepliesByConnectionId.Keys.ToList();
             connectionIds.Shuffle();
 

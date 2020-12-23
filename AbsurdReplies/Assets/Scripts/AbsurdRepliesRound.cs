@@ -105,6 +105,7 @@ namespace AbsurdReplies
 
             _started = false;
             _finished = false;
+            _roundReplies.Initialize();
             _questionCategory = await _questionCategorySelector.SelectRandomQuestionCategory();
             Debug.Log($"Category picked: {_questionCategory}");
             if (_questionCategory == QuestionCategory.Unknown)

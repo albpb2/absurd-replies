@@ -7,20 +7,27 @@ namespace AbsurdReplies.Game.Round
     {
         private WaitingToStartRoundState _waitingToStartRoundState;
         private GameViewsManager _gameViewsManager;
+        private VotingProcess _votingProcess;
 
         private bool _roundFinished;
 
-        public VotingRoundState(WaitingToStartRoundState waitingToStartRoundState, GameViewsManager gameViewsManager)
+        public VotingRoundState(
+            WaitingToStartRoundState waitingToStartRoundState, 
+            GameViewsManager gameViewsManager,
+            VotingProcess votingProcess)
         {
             _waitingToStartRoundState = waitingToStartRoundState;
             _gameViewsManager = gameViewsManager;
+            _votingProcess = votingProcess;
             
             DependencyValidator.ValidateDependency(_waitingToStartRoundState, nameof(_waitingToStartRoundState), nameof(VotingRoundState));
             DependencyValidator.ValidateDependency(_gameViewsManager, nameof(_gameViewsManager), nameof(VotingRoundState));
+            DependencyValidator.ValidateDependency(_votingProcess, nameof(_votingProcess), nameof(VotingRoundState));
         }
 
         public async Task<IRoundState> EnterState(AbsurdRepliesRound round)
         {
+            _votingProcess.StartProcess();
             await _gameViewsManager.DisplayVotingView();
             await round.StartTimer(GameSettings.Instance.RoundTimeSeconds);
             return this;
