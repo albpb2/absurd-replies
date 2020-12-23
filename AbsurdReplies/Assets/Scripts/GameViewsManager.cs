@@ -131,6 +131,9 @@ namespace AbsurdReplies
         [ClientRpc]
         public async void HideAllViews()
         {
+            _votingInputField.text = string.Empty;
+            _answerViewInputText.text = string.Empty;
+            
             _answerView.SetActive(false);
             _questionView.SetActive(false);
             _categorySelectionView.SetActive(false);
