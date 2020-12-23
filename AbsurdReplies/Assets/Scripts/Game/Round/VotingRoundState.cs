@@ -27,7 +27,7 @@ namespace AbsurdReplies.Game.Round
 
         public async Task<IRoundState> EnterState(AbsurdRepliesRound round)
         {
-            _votingProcess.StartProcess();
+            await _votingProcess.StartProcess();
             await _gameViewsManager.DisplayVotingView();
             await round.StartTimer(GameSettings.Instance.RoundTimeSeconds);
             return this;

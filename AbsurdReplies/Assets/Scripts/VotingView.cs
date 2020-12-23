@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AbsurdReplies.Dependencies;
+using Mirror;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -48,15 +49,9 @@ namespace AbsurdReplies
             _votingProcess.Vote(_inputField.text);
         }
 
-        public async Task DisplayOptionsAndReplies(Dictionary<string, string> repliesByOption)
+        public async void DisplayOptionsAndReplies(string formattedOptionsAndRepliesText)
         {
-            var text = string.Empty;
-            foreach (var option in repliesByOption.Keys.OrderBy(k => k))
-            {
-                text += $"{option}: {repliesByOption[option]}{Environment.NewLine}";
-            }
-
-            _optionsText.text = text;
+            _optionsText.text = formattedOptionsAndRepliesText;
         }
 
         public void SetValidOptions(IEnumerable<string> options)

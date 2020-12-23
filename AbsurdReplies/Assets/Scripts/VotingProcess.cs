@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AbsurdReplies.Dependencies;
@@ -33,11 +34,13 @@ namespace AbsurdReplies
             Initialize();
         }
 
-        public void StartProcess()
+        public Task StartProcess()
         {
             Initialize();
             AssignShuffledOptions();
             ShowReplies();
+
+            return Task.CompletedTask;
         }
 
         [Command(ignoreAuthority = true)]
@@ -50,7 +53,7 @@ namespace AbsurdReplies
             _voteByConnectionId[sender.connectionId] = votedPlayer;
         }
 
-        public Task ShowReplies()
+        private void ShowReplies()
         {
             var repliesByOption = new Dictionary<string, string>();
             foreach (var option in _connectionIdByOption.Keys)
@@ -58,7 +61,24 @@ namespace AbsurdReplies
                 repliesByOption[option] = _roundReplies.RepliesByConnectionId[_connectionIdByOption[option]];
             }
             
-            return _votingView.DisplayOptionsAndReplies(repliesByOption);
+            ShowReplies(FormatOptionsAndRepliesText(repliesByOption));
+        }
+
+        [ClientRpc]
+        private async void ShowReplies(string repliesText)
+        {
+            _votingView.DisplayOptionsAndReplies(repliesText);
+        }
+
+        private string FormatOptionsAndRepliesText(Dictionary<string, string> repliesByOption)
+        {
+            var text = string.Empty;
+            foreach (var option in repliesByOption.Keys.OrderBy(k => k))
+            {
+                text += $"{option}: {repliesByOption[option]}{Environment.NewLine}";
+            }
+
+            return text;
         }
 
         private void Initialize()
