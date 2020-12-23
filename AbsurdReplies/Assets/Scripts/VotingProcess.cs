@@ -11,13 +11,13 @@ namespace AbsurdReplies
 {
     public class VotingProcess : NetworkBehaviour
     {
+        private readonly string[] _options = {"A", "B", "C", "D", "E", "F", "G", "H"};
+        
         private VotingView _votingView;
         private RoundReplies _roundReplies;
         
         private Dictionary<string, int> _connectionIdByOption;
         private Dictionary<int, int> _voteByConnectionId;
-
-        private readonly string[] Options = new[] {"A", "B", "C", "D", "E", "F", "G", "H"};
 
         [Inject]
         public void InitializeDependencies(VotingView votingView, RoundReplies roundReplies)
@@ -99,10 +99,16 @@ namespace AbsurdReplies
 
             for (var i = 0; i < connectionIds.Count; i++)
             {
-                _connectionIdByOption[Options[i]] = connectionIds[i];
+                _connectionIdByOption[_options[i]] = connectionIds[i];
             }
             
-            _votingView.SetValidOptions(_connectionIdByOption.Keys);
+            SetValidOptions(_connectionIdByOption.Keys.ToArray());
+        }
+
+        [ClientRpc]
+        public async void SetValidOptions(string[] validOptions)
+        {
+            _votingView.SetValidOptions(validOptions);
         }
     }
 }

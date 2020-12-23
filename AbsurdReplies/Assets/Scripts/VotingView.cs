@@ -41,12 +41,13 @@ namespace AbsurdReplies
             if (string.IsNullOrWhiteSpace(_inputField.text))
                 return;
 
-            if (!_validStrings.Contains(_inputField.text))
+            var option = _inputField.text.ToUpper();
+            if (!_validStrings.Contains(option))
                 return;
 
             DisableControls();
             
-            _votingProcess.Vote(_inputField.text);
+            _votingProcess.Vote(option);
         }
 
         public async void DisplayOptionsAndReplies(string formattedOptionsAndRepliesText)

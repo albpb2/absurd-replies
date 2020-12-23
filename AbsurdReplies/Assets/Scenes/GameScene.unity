@@ -1685,7 +1685,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 859044456}
-  - component: {fileID: 859044457}
   - component: {fileID: 859044458}
   m_Layer: 5
   m_Name: VotingView
@@ -1717,21 +1716,6 @@ RectTransform:
   m_AnchoredPosition: {x: 360, y: -170}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &859044457
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 859044455}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 31522836c33b44678f53d8f45596a694, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _roundReplies: {fileID: 731680425}
-  _replyInputField: {fileID: 1671263551}
-  _submitButton: {fileID: 1841577546}
 --- !u!114 &859044458
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3917,8 +3901,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 859044457}
-        m_MethodName: SendReply
+      - m_Target: {fileID: 859044458}
+        m_MethodName: Vote
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
