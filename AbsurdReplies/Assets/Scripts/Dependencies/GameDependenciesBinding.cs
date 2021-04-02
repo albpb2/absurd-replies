@@ -18,6 +18,7 @@ namespace AbsurdReplies.Dependencies
             Container.Bind<QuestionAndAnswerRoundState>().ToSelf().AsSingle();
             Container.Bind<WaitingToStartRoundState>().ToSelf().AsSingle();
             Container.Bind<VotingRoundState>().ToSelf().AsSingle();
+            Container.Bind<VotingResultsRoundState>().ToSelf().AsSingle();
         }
     }
 }

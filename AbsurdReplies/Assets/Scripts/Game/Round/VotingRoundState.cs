@@ -5,22 +5,20 @@ namespace AbsurdReplies.Game.Round
 {
     public class VotingRoundState : IRoundState
     {
-        private WaitingToStartRoundState _waitingToStartRoundState;
+        private VotingResultsRoundState _votingResultsRoundState;
         private GameViewsManager _gameViewsManager;
         private VotingProcess _votingProcess;
 
-        private bool _roundFinished;
-
         public VotingRoundState(
-            WaitingToStartRoundState waitingToStartRoundState, 
+            VotingResultsRoundState votingResultsRoundState, 
             GameViewsManager gameViewsManager,
             VotingProcess votingProcess)
         {
-            _waitingToStartRoundState = waitingToStartRoundState;
+            _votingResultsRoundState = votingResultsRoundState;
             _gameViewsManager = gameViewsManager;
             _votingProcess = votingProcess;
             
-            DependencyValidator.ValidateDependency(_waitingToStartRoundState, nameof(_waitingToStartRoundState), nameof(VotingRoundState));
+            DependencyValidator.ValidateDependency(_votingResultsRoundState, nameof(_votingResultsRoundState), nameof(VotingRoundState));
             DependencyValidator.ValidateDependency(_gameViewsManager, nameof(_gameViewsManager), nameof(VotingRoundState));
             DependencyValidator.ValidateDependency(_votingProcess, nameof(_votingProcess), nameof(VotingRoundState));
         }
@@ -44,7 +42,7 @@ namespace AbsurdReplies.Game.Round
                 await round.FinishRound();
                 await round.PlayNewRound();
 
-                return await _waitingToStartRoundState.EnterState(round);
+                return await _votingResultsRoundState.EnterState(round);
             }
 
             return this;
