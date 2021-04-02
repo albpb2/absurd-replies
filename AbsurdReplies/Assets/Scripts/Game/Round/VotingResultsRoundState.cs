@@ -25,12 +25,15 @@ namespace AbsurdReplies.Game.Round
             return Task.FromResult(this as IRoundState);
         }
 
-        public Task<IRoundState> Update(AbsurdRepliesRound round)
+        public async Task<IRoundState> Update(AbsurdRepliesRound round)
         {
             if (_moveToNextState)
-                return _waitingToStartRoundState.EnterState(round);
+            {
+                await round.PlayNewRound();
+                return await _waitingToStartRoundState.EnterState(round);
+            }
             
-            return Task.FromResult(this as IRoundState);
+            return this;
         }
 
         private IEnumerator MoveToNextRound()

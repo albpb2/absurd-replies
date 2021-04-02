@@ -38,7 +38,6 @@ namespace AbsurdReplies.Game.Round
                 FinishStage();
 
                 await round.FinishRound();
-                await round.PlayNewRound();
 
                 return await _votingResultsRoundState.EnterState(round);
             }

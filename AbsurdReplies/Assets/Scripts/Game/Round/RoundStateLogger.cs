@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using AbsurdReplies.Exceptions;
-using AbsurdReplies.Infrastructure;
+using UnityEngine;
+using ILogger = AbsurdReplies.Infrastructure.ILogger;
 
 namespace AbsurdReplies.Game.Round
 {
@@ -17,12 +18,13 @@ namespace AbsurdReplies.Game.Round
         
         public Task<IRoundState> EnterState(AbsurdRepliesRound round)
         {
-            throw new System.NotImplementedException();
+            Debug.Log($"Entering state {_actualState.GetType().Name}");
+            return _actualState.EnterState(round);
         }
 
         public Task<IRoundState> Update(AbsurdRepliesRound round)
         {
-            throw new System.NotImplementedException();
+            return _actualState.Update(round);
         }
     }
 }
