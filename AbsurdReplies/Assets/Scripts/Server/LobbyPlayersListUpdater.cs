@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using AbsurdReplies.Server;
 using AbsurdReplies.Dependencies;
 using Mirror;
 using TMPro;
 using UnityEngine;
 
-namespace AbsurdReplies
+namespace AbsurdReplies.Server
 {
     public class LobbyPlayersListUpdater : NetworkBehaviour
     {
@@ -14,7 +12,7 @@ namespace AbsurdReplies
 
         private void Awake()
         {
-            DependencyValidator.ValidateDependency(_playersListText, nameof(_playersListText), nameof(LobbyPlayersObserver));
+            DependencyValidator.ValidateDependency(_playersListText, nameof(_playersListText));
         }
         
 

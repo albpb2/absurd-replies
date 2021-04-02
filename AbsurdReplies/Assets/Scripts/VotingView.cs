@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using AbsurdReplies.Dependencies;
-using Mirror;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -31,9 +27,9 @@ namespace AbsurdReplies
         {
             _validStrings = new HashSet<string>();
             
-            DependencyValidator.ValidateDependency(_optionsText, nameof(_optionsText), nameof(VotingView));
-            DependencyValidator.ValidateDependency(_inputField, nameof(_inputField), nameof(VotingView));
-            DependencyValidator.ValidateDependency(_button, nameof(_button), nameof(VotingView));
+            DependencyValidator.ValidateDependency(_optionsText, nameof(_optionsText));
+            DependencyValidator.ValidateDependency(_inputField, nameof(_inputField));
+            DependencyValidator.ValidateDependency(_button, nameof(_button));
         }
 
         public async void Vote()

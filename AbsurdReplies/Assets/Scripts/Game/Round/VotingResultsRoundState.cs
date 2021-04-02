@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using System.Threading.Tasks;
-using AbsurdReplies.Dependencies;
+using AbsurdReplies.Exceptions;
 using UnityEngine;
 
 namespace AbsurdReplies.Game.Round
@@ -15,9 +15,7 @@ namespace AbsurdReplies.Game.Round
 
         public VotingResultsRoundState(WaitingToStartRoundState waitingToStartRoundState)
         {
-            _waitingToStartRoundState = waitingToStartRoundState;
-
-            DependencyValidator.ValidateDependency(_waitingToStartRoundState, nameof(_waitingToStartRoundState), nameof(WaitingToStartRoundState));
+            _waitingToStartRoundState = waitingToStartRoundState ?? throw ExceptionBecause.MissingDependency(nameof(waitingToStartRoundState));
         }
 
         public Task<IRoundState> EnterState(AbsurdRepliesRound round)

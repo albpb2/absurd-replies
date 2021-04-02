@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using AbsurdReplies.Dependencies;
+using AbsurdReplies.Exceptions;
 using AbsurdReplies.Game.Round;
 using Mirror;
 using TMPro;
@@ -53,24 +54,17 @@ namespace AbsurdReplies
             WaitingToStartRoundState waitingToStartRoundState,
             QuestionAndAnswerRoundState questionAndAnswerRoundState)
         {
-            _questionCategorySelector = questionCategorySelector;
-            _roundReplies = roundReplies;
-            _gameViewsManager = gameViewsManager;
-            _questionsProvider = questionsProvider;
-            _waitingToStartRoundState = waitingToStartRoundState;
-            _questionAndAnswerRoundState = questionAndAnswerRoundState;
-            
-            DependencyValidator.ValidateDependency(_questionCategorySelector, nameof(_questionCategorySelector), nameof(AbsurdRepliesRound));
-            DependencyValidator.ValidateDependency(_roundReplies, nameof(_roundReplies), nameof(AbsurdRepliesRound));
-            DependencyValidator.ValidateDependency(_gameViewsManager, nameof(_gameViewsManager), nameof(AbsurdRepliesRound));
-            DependencyValidator.ValidateDependency(_questionsProvider, nameof(_questionsProvider), nameof(AbsurdRepliesRound));
-            DependencyValidator.ValidateDependency(_waitingToStartRoundState, nameof(_waitingToStartRoundState), nameof(AbsurdRepliesRound));
-            DependencyValidator.ValidateDependency(_questionAndAnswerRoundState, nameof(_questionAndAnswerRoundState), nameof(AbsurdRepliesRound));
+            _questionCategorySelector = questionCategorySelector ?? throw ExceptionBecause.MissingDependency(nameof(questionCategorySelector));
+            _roundReplies = roundReplies ?? throw ExceptionBecause.MissingDependency(nameof(roundReplies));
+            _gameViewsManager = gameViewsManager ?? throw ExceptionBecause.MissingDependency(nameof(gameViewsManager));
+            _questionsProvider = questionsProvider ?? throw ExceptionBecause.MissingDependency(nameof(questionsProvider));
+            _waitingToStartRoundState = waitingToStartRoundState ?? throw ExceptionBecause.MissingDependency(nameof(waitingToStartRoundState));
+            _questionAndAnswerRoundState = questionAndAnswerRoundState ?? throw ExceptionBecause.MissingDependency(nameof(questionAndAnswerRoundState));
         }
 
         private async void Awake()
         {
-            DependencyValidator.ValidateDependency(_timerText, nameof(_timerText), nameof(AbsurdRepliesRound));
+            DependencyValidator.ValidateDependency(_timerText, nameof(_timerText));
         }
 
         private void Start()

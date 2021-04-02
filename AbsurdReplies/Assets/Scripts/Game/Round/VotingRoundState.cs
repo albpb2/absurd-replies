@@ -1,26 +1,24 @@
 ﻿using System.Threading.Tasks;
-using AbsurdReplies.Dependencies;
+using AbsurdReplies.Exceptions;
+using AbsurdReplies.Infrastructure;
 
 namespace AbsurdReplies.Game.Round
 {
     public class VotingRoundState : IRoundState
     {
-        private VotingResultsRoundState _votingResultsRoundState;
+        private IRoundState _votingResultsRoundState;
         private GameViewsManager _gameViewsManager;
         private VotingProcess _votingProcess;
 
         public VotingRoundState(
             VotingResultsRoundState votingResultsRoundState, 
             GameViewsManager gameViewsManager,
-            VotingProcess votingProcess)
+            VotingProcess votingProcess,
+            ILogger logger)
         {
-            _votingResultsRoundState = votingResultsRoundState;
-            _gameViewsManager = gameViewsManager;
-            _votingProcess = votingProcess;
-            
-            DependencyValidator.ValidateDependency(_votingResultsRoundState, nameof(_votingResultsRoundState), nameof(VotingRoundState));
-            DependencyValidator.ValidateDependency(_gameViewsManager, nameof(_gameViewsManager), nameof(VotingRoundState));
-            DependencyValidator.ValidateDependency(_votingProcess, nameof(_votingProcess), nameof(VotingRoundState));
+            _votingResultsRoundState = new RoundStateLogger(votingResultsRoundState, logger) ?? throw ExceptionBecause.MissingDependency(nameof(votingResultsRoundState));
+            _gameViewsManager = gameViewsManager ?? throw ExceptionBecause.MissingDependency(nameof(gameViewsManager));
+            _votingProcess = votingProcess ?? throw ExceptionBecause.MissingDependency(nameof(votingProcess));
         }
 
         public async Task<IRoundState> EnterState(AbsurdRepliesRound round)

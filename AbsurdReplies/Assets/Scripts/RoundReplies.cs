@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using AbsurdReplies.Dependencies;
+using AbsurdReplies.Exceptions;
 using Mirror;
 using UnityEngine;
 using Zenject;
@@ -18,9 +19,7 @@ namespace AbsurdReplies
         [Inject]
         public void InitializeDependencies(AbsurdRepliesGame game)
         {
-            _game = game;
-            
-            DependencyValidator.ValidateDependency(game, nameof(game), nameof(RoundReplies));
+            _game = game ?? throw ExceptionBecause.MissingDependency(nameof(game));
         }
 
         private void Awake()

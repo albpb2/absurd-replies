@@ -13,8 +13,8 @@ namespace AbsurdReplies
 
         private void Awake()
         {
-            DependencyValidator.ValidateDependency(_roundReplies, nameof(_roundReplies), nameof(ReplyView));
-            DependencyValidator.ValidateDependency(_replyInputField, nameof(_replyInputField), nameof(ReplyView));
+            DependencyValidator.ValidateDependency(_roundReplies, nameof(_roundReplies));
+            DependencyValidator.ValidateDependency(_replyInputField, nameof(_replyInputField));
         }
 
         public async void SendReply()

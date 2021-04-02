@@ -17,7 +17,7 @@ namespace AbsurdReplies.Server
         
         private void Awake()
         {
-            DependencyValidator.ValidateDependency(_lobbyPlayersListUpdater, nameof(_lobbyPlayersListUpdater), nameof(LobbyPlayersObserver));
+            DependencyValidator.ValidateDependency(_lobbyPlayersListUpdater, nameof(_lobbyPlayersListUpdater));
             
             _players = new Dictionary<int, AbsurdRepliesPlayer>();
         }

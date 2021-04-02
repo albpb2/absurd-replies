@@ -19,9 +19,9 @@ namespace AbsurdReplies
 
         private void Awake()
         {
-            DependencyValidator.ValidateDependency(_playerNameInput, nameof(_playerNameInput), nameof(MainMenu));
-            DependencyValidator.ValidateDependency(_portInput, nameof(_portInput), nameof(MainMenu));
-            DependencyValidator.ValidateDependency(_localGameButtons, nameof(_localGameButtons), nameof(MainMenu));
+            DependencyValidator.ValidateDependency(_playerNameInput, nameof(_playerNameInput));
+            DependencyValidator.ValidateDependency(_portInput, nameof(_portInput));
+            DependencyValidator.ValidateDependency(_localGameButtons, nameof(_localGameButtons));
         }
 
         private async void Update()

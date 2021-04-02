@@ -1,4 +1,5 @@
-﻿using Zenject;
+﻿using AbsurdReplies.Infrastructure;
+using Zenject;
 
 namespace AbsurdReplies.Dependencies
 {
@@ -13,6 +14,7 @@ namespace AbsurdReplies.Dependencies
             Container.Bind<QuestionCategorySelector>().ToSelf().AsCached();
             Container.Bind<QuestionParser>().ToSelf().AsCached();
             Container.Bind<QuestionsProvider>().ToSelf().AsCached();
+            Container.Bind<ILogger>().To<Logger>().AsCached();
         }
     }
 }

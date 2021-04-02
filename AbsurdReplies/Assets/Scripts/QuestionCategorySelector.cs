@@ -11,7 +11,7 @@ namespace AbsurdReplies
         public QuestionCategorySelector(Dice dice)
         {
             _dice = dice;
-            DependencyValidator.ValidateDependency(_dice, nameof(_dice), nameof(QuestionCategorySelector));
+            DependencyValidator.ValidateDependency(_dice, nameof(_dice));
         }
 
         public async Task<QuestionCategory> SelectRandomQuestionCategory()

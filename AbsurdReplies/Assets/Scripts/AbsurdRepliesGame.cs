@@ -5,7 +5,6 @@ using AbsurdReplies.Dependencies;
 using Mirror;
 using UnityEngine;
 using Zenject;
-using Random = System.Random;
 
 namespace AbsurdReplies
 {
@@ -25,7 +24,7 @@ namespace AbsurdReplies
         {
             _round = round;
 
-            DependencyValidator.ValidateDependency(_round, nameof(_round), nameof(AbsurdRepliesGame));
+            DependencyValidator.ValidateDependency(_round, nameof(_round));
         }
 
         private async void Start()

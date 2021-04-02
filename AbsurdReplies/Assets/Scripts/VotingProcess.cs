@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AbsurdReplies.Dependencies;
+using AbsurdReplies.Exceptions;
 using Mirror;
 using UnityEngine;
 using Zenject;
@@ -22,11 +23,8 @@ namespace AbsurdReplies
         [Inject]
         public void InitializeDependencies(VotingView votingView, RoundReplies roundReplies)
         {
-            _votingView = votingView;
-            _roundReplies = roundReplies;
-            
-            DependencyValidator.ValidateDependency(_votingView, nameof(_votingView), nameof(VotingProcess));
-            DependencyValidator.ValidateDependency(_roundReplies, nameof(_roundReplies), nameof(VotingProcess));
+            _votingView = votingView ?? throw ExceptionBecause.MissingDependency(nameof(votingView));
+            _roundReplies = roundReplies ?? throw ExceptionBecause.MissingDependency(nameof(roundReplies));
         }
 
         private async void Awake()

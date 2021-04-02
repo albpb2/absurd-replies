@@ -2,7 +2,6 @@
 using AbsurdReplies.Dependencies;
 using Mirror;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace AbsurdReplies
@@ -15,10 +14,7 @@ namespace AbsurdReplies
 
         private async void Awake()
         {
-            DependencyValidator.ValidateDependency(
-                _lobbyPlayersObserver, 
-                nameof(_lobbyPlayersObserver),
-                nameof(StartGameButton));
+            DependencyValidator.ValidateDependency(_lobbyPlayersObserver, nameof(_lobbyPlayersObserver));
 
             _button = GetComponent<Button>();
         }

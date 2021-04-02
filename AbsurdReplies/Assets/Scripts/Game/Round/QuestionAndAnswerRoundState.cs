@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using AbsurdReplies.Dependencies;
+using AbsurdReplies.Exceptions;
 
 namespace AbsurdReplies.Game.Round
 {
@@ -12,11 +12,8 @@ namespace AbsurdReplies.Game.Round
         
         public QuestionAndAnswerRoundState(VotingRoundState votingRoundState, GameViewsManager gameViewsManager)
         {
-            _votingRoundState = votingRoundState;
-            _gameViewsManager = gameViewsManager;
-            
-            DependencyValidator.ValidateDependency(_votingRoundState, nameof(_votingRoundState), nameof(QuestionAndAnswerRoundState));
-            DependencyValidator.ValidateDependency(_gameViewsManager, nameof(_gameViewsManager), nameof(QuestionAndAnswerRoundState));
+            _votingRoundState = votingRoundState ?? throw ExceptionBecause.MissingDependency(nameof(votingRoundState));
+            _gameViewsManager = gameViewsManager ?? throw ExceptionBecause.MissingDependency(nameof(gameViewsManager));
         }
 
         public async Task<IRoundState> EnterState(AbsurdRepliesRound round)

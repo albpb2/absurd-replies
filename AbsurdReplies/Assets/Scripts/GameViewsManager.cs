@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using AbsurdReplies.Dependencies;
+using AbsurdReplies.Exceptions;
 using Mirror;
 using TMPro;
 using UnityEngine;
@@ -27,23 +28,20 @@ namespace AbsurdReplies
         [Inject]
         public void InitializeDependencies(AbsurdRepliesRound round, AbsurdRepliesGame game)
         {
-            _round = round;
-            _game = game;
-            
-            DependencyValidator.ValidateDependency(_round, nameof(_round), nameof(GameViewsManager));
-            DependencyValidator.ValidateDependency(_game, nameof(_game), nameof(GameViewsManager));
+            _round = round ?? throw ExceptionBecause.MissingDependency(nameof(round));
+            _game = game ?? throw ExceptionBecause.MissingDependency(nameof(game));
         }
 
         private void Awake()
         {
-            DependencyValidator.ValidateDependency(_categorySelectionView, nameof(_categorySelectionView), nameof(GameViewsManager));
-            DependencyValidator.ValidateDependency(_questionView, nameof(_questionView), nameof(GameViewsManager));
-            DependencyValidator.ValidateDependency(_answerView, nameof(_answerView), nameof(GameViewsManager));
-            DependencyValidator.ValidateDependency(_questionText, nameof(_questionText), nameof(GameViewsManager));
-            DependencyValidator.ValidateDependency(_votingView, nameof(_votingView), nameof(GameViewsManager));
-            DependencyValidator.ValidateDependency(_answerText, nameof(_answerText), nameof(GameViewsManager));
-            DependencyValidator.ValidateDependency(_votingInputField, nameof(_votingInputField), nameof(GameViewsManager));
-            DependencyValidator.ValidateDependency(_votingButton, nameof(_votingButton), nameof(GameViewsManager));
+            DependencyValidator.ValidateDependency(_categorySelectionView, nameof(_categorySelectionView));
+            DependencyValidator.ValidateDependency(_questionView, nameof(_questionView));
+            DependencyValidator.ValidateDependency(_answerView, nameof(_answerView));
+            DependencyValidator.ValidateDependency(_questionText, nameof(_questionText));
+            DependencyValidator.ValidateDependency(_votingView, nameof(_votingView));
+            DependencyValidator.ValidateDependency(_answerText, nameof(_answerText));
+            DependencyValidator.ValidateDependency(_votingInputField, nameof(_votingInputField));
+            DependencyValidator.ValidateDependency(_votingButton, nameof(_votingButton));
         }
 
         public void DisplayCategorySelectionView()
